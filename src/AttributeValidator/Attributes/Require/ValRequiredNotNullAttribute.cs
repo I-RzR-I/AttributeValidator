@@ -28,20 +28,29 @@ namespace AttributeValidator.Attributes.Require
     /// <summary>
     ///     Attribute for required not null.
     /// </summary>
-    /// <seealso cref="T:System.ComponentModel.DataAnnotations.ValidationAttribute" />
+    /// <seealso cref="T:System.ComponentModel.DataAnnotations.ValidationAttribute"/>
     /// =================================================================================================
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter)]
     public class ValRequiredNotNullAttribute : ValidationAttribute
     {
         /// -------------------------------------------------------------------------------------------------
         /// <summary>
-        ///     Initializes a new instance of the <see cref="ValRequiredNotNullAttribute" /> class.
+        ///     (Immutable) userMessage.
         /// </summary>
         /// =================================================================================================
-        public ValRequiredNotNullAttribute() : base(Message.DefaultErrorMessage_NotNull) { }
+        private readonly string CustomUserMessage;
+
+        /// -------------------------------------------------------------------------------------------------
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="ValRequiredNotNullAttribute" /> class.
+        /// </summary>
+        /// <param name="userMessage">(Optional) Message describing the user.</param>
+        /// =================================================================================================
+        public ValRequiredNotNullAttribute(string userMessage = null) : base(Message.DefaultErrorMessage_NotNull)
+            => CustomUserMessage = userMessage;
 
 #if NET45_OR_GREATER || NETSTANDARD2_0_OR_GREATER
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public override bool IsValid(object value) => value != null;
 #endif
 
@@ -54,5 +63,11 @@ namespace AttributeValidator.Attributes.Require
             return value != null ? ValidationResult.Success : new ValidationResult(message);
         }
 #endif
+
+        /// <inheritdoc/>
+        public override string FormatErrorMessage(string name)
+            => string.IsNullOrEmpty(CustomUserMessage)
+                ? string.Format(Message.DefaultErrorMessage_NotNull, name)
+                : CustomUserMessage;
     }
 }

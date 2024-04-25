@@ -28,20 +28,29 @@ namespace AttributeValidator.Attributes.Require
     /// <summary>
     ///     Attribute for required not default.
     /// </summary>
-    /// <seealso cref="T:System.ComponentModel.DataAnnotations.ValidationAttribute" />
+    /// <seealso cref="T:System.ComponentModel.DataAnnotations.ValidationAttribute"/>
     /// =================================================================================================
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter)]
     public class ValRequiredNotDefaultAttribute : ValidationAttribute
     {
         /// -------------------------------------------------------------------------------------------------
         /// <summary>
-        ///     Initializes a new instance of the <see cref="ValRequiredNotDefaultAttribute" /> class.
+        ///     (Immutable) userMessage.
         /// </summary>
         /// =================================================================================================
-        public ValRequiredNotDefaultAttribute() : base(Message.DefaultErrorMessage_NotDefault) { }
+        private readonly string CustomUserMessage;
+
+        /// -------------------------------------------------------------------------------------------------
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="ValRequiredNotDefaultAttribute" /> class.
+        /// </summary>
+        /// <param name="userMessage">(Optional) Message describing the user.</param>
+        /// =================================================================================================
+        public ValRequiredNotDefaultAttribute(string userMessage = null) : base(Message.DefaultErrorMessage_NotDefault) 
+        => CustomUserMessage = userMessage;
 
 #if NET45_OR_GREATER || NETSTANDARD2_0_OR_GREATER
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public override bool IsValid(object value) => value != default;
 #endif
 
@@ -54,5 +63,11 @@ namespace AttributeValidator.Attributes.Require
             return value != default ? ValidationResult.Success : new ValidationResult(message);
         }
 #endif
+
+        /// <inheritdoc/>
+        public override string FormatErrorMessage(string name)
+            => string.IsNullOrEmpty(CustomUserMessage)
+                ? string.Format(Message.DefaultErrorMessage_NotDefault, name)
+                : CustomUserMessage;
     }
 }

@@ -28,20 +28,29 @@ namespace AttributeValidator.Attributes.Require
     /// <summary>
     ///     Attribute for required not empty.
     /// </summary>
-    /// <seealso cref="T:System.ComponentModel.DataAnnotations.ValidationAttribute" />
+    /// <seealso cref="T:System.ComponentModel.DataAnnotations.ValidationAttribute"/>
     /// =================================================================================================
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter)]
     public class ValRequiredNotEmptyAttribute : ValidationAttribute
     {
         /// -------------------------------------------------------------------------------------------------
         /// <summary>
-        ///     Initializes a new instance of the <see cref="ValRequiredNotEmptyAttribute" /> class.
+        ///     (Immutable) userMessage.
         /// </summary>
         /// =================================================================================================
-        public ValRequiredNotEmptyAttribute() : base(Message.DefaultErrorMessage_NotEmpty) { }
+        private readonly string CustomUserMessage;
+
+        /// -------------------------------------------------------------------------------------------------
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="ValRequiredNotEmptyAttribute" /> class.
+        /// </summary>
+        /// <param name="userMessage">(Optional) Message describing the user.</param>
+        /// =================================================================================================
+        public ValRequiredNotEmptyAttribute(string userMessage = null) : base(Message.DefaultErrorMessage_NotEmpty)
+            => CustomUserMessage = userMessage;
 
 #if NET45_OR_GREATER || NETSTANDARD2_0_OR_GREATER
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public override bool IsValid(object value)
             => ValidateObject(value);
 #endif
@@ -55,6 +64,12 @@ namespace AttributeValidator.Attributes.Require
             return ValidateObject(value) ? ValidationResult.Success : new ValidationResult(message);
         }
 #endif
+
+        /// <inheritdoc/>
+        public override string FormatErrorMessage(string name)
+            => string.IsNullOrEmpty(CustomUserMessage)
+                ? string.Format(Message.DefaultErrorMessage_NotEmpty, name)
+                : CustomUserMessage;
 
         /// -------------------------------------------------------------------------------------------------
         /// <summary>
