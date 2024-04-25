@@ -29,20 +29,29 @@ namespace AttributeValidator.Attributes.Require
     /// <summary>
     ///     Attribute for value required positive.
     /// </summary>
-    /// <seealso cref="T:System.ComponentModel.DataAnnotations.ValidationAttribute" />
+    /// <seealso cref="T:System.ComponentModel.DataAnnotations.ValidationAttribute"/>
     /// =================================================================================================
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter)]
     public class ValRequiredPositiveAttribute : ValidationAttribute
     {
         /// -------------------------------------------------------------------------------------------------
         /// <summary>
-        ///     Initializes a new instance of the <see cref="ValRequiredPositiveAttribute" /> class.
+        ///     (Immutable) userMessage.
         /// </summary>
         /// =================================================================================================
-        public ValRequiredPositiveAttribute() : base(Message.DefaultErrorMessage_Positive) { }
+        private readonly string CustomUserMessage;
+
+        /// -------------------------------------------------------------------------------------------------
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="ValRequiredPositiveAttribute" /> class.
+        /// </summary>
+        /// <param name="userMessage">(Optional) Message describing the user.</param>
+        /// =================================================================================================
+        public ValRequiredPositiveAttribute(string userMessage = null) : base(Message.DefaultErrorMessage_Positive)
+            => CustomUserMessage = userMessage;
 
 #if NET45_OR_GREATER || NETSTANDARD2_0_OR_GREATER
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public override bool IsValid(object value) => ValidateObject(value);
 #endif
 
@@ -55,6 +64,12 @@ namespace AttributeValidator.Attributes.Require
             return ValidateObject(value) ? ValidationResult.Success : new ValidationResult(message);
         }
 #endif
+
+        /// <inheritdoc/>
+        public override string FormatErrorMessage(string name)
+            => string.IsNullOrEmpty(CustomUserMessage)
+                ? string.Format(Message.DefaultErrorMessage_Positive, name)
+                : CustomUserMessage;
 
         /// -------------------------------------------------------------------------------------------------
         /// <summary>

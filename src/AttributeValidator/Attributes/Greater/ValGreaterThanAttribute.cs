@@ -29,7 +29,7 @@ namespace AttributeValidator.Attributes.Greater
     /// <summary>
     ///     Attribute for value greater than.
     /// </summary>
-    /// <seealso cref="T:System.ComponentModel.DataAnnotations.ValidationAttribute" />
+    /// <seealso cref="T:System.ComponentModel.DataAnnotations.ValidationAttribute"/>
     /// =================================================================================================
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter)]
     public class ValGreaterThanAttribute : ValidationAttribute
@@ -43,15 +43,26 @@ namespace AttributeValidator.Attributes.Greater
 
         /// -------------------------------------------------------------------------------------------------
         /// <summary>
+        ///     (Immutable) userMessage.
+        /// </summary>
+        /// =================================================================================================
+        private readonly string CustomUserMessage;
+
+        /// -------------------------------------------------------------------------------------------------
+        /// <summary>
         ///     Initializes a new instance of the <see cref="ValGreaterThanAttribute" /> class.
         /// </summary>
         /// <param name="greaterThan">The greater than.</param>
+        /// <param name="userMessage">(Optional) The user message.</param>
         /// =================================================================================================
-        public ValGreaterThanAttribute(object greaterThan) : base(string.Empty)
-            => GreaterThanValue = greaterThan;
+        public ValGreaterThanAttribute(object greaterThan, string userMessage = null) : base(string.Empty)
+        {
+            GreaterThanValue = greaterThan;
+            CustomUserMessage = userMessage;
+        }
 
 #if NET45_OR_GREATER || NETSTANDARD2_0_OR_GREATER
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public override bool IsValid(object value) => ValidateObject(value);
 #endif
 
@@ -59,15 +70,17 @@ namespace AttributeValidator.Attributes.Greater
         /// <inheritdoc/>
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            var message = string.Format(Message.DefaultErrorMessage_NotNull, validationContext.MemberName);
+            var userMessage = string.Format(Message.DefaultErrorMessage_NotNull, validationContext.MemberName);
 
-            return ValidateObject(value) ? ValidationResult.Success : new ValidationResult(message);
+            return ValidateObject(value) ? ValidationResult.Success : new ValidationResult(userMessage);
         }
 #endif
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public override string FormatErrorMessage(string name)
-            => string.Format(Message.DefaultErrorMessage_GreaterThan, name, GreaterThanValue);
+            => string.IsNullOrEmpty(CustomUserMessage)
+            ? string.Format(Message.DefaultErrorMessage_GreaterThan, name, GreaterThanValue)
+            : CustomUserMessage;
 
         /// -------------------------------------------------------------------------------------------------
         /// <summary>
