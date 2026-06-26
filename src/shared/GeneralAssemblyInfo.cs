@@ -29,7 +29,7 @@ using System.Resources;
 
 [assembly: AssemblyCompany("RzR ®")]
 [assembly: AssemblyProduct("AttributeValidator")]
-[assembly: AssemblyCopyright("Copyright © 2022-2024 RzR All rights reserved.")]
+[assembly: AssemblyCopyright("Copyright © 2022-2026 RzR All rights reserved.")]
 [assembly: AssemblyTrademark("® RzR™")]
 [assembly: AssemblyDescription("A collection of attributes that allows the validation of the input data model.")]
 
@@ -43,6 +43,6 @@ using System.Resources;
 #if !NETSTANDARD1_1
 [assembly: NeutralResourcesLanguage("en-US", UltimateResourceFallbackLocation.MainAssembly)]
 #endif
-[assembly: AssemblyVersion("1.0.1.5145")]
-[assembly: AssemblyFileVersion("1.0.1.5145")]
-[assembly: AssemblyInformationalVersion("1.0.1.5145")]
+[assembly: AssemblyVersion("2.0.0.106")]
+[assembly: AssemblyFileVersion("2.0.0.106")]
+[assembly: AssemblyInformationalVersion("2.0.0.106")]

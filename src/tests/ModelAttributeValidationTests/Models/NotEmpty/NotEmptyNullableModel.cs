@@ -1,21 +1,9 @@
-﻿// ***********************************************************************
-//  Assembly         : RzR.Shared.Attributes.ModelAttributeValidationTests
-//  Author           : RzR
-//  Created On       : 2024-04-23 22:11
-// 
-//  Last Modified By : RzR
-//  Last Modified On : 2024-04-23 22:11
-// ***********************************************************************
-//  <copyright file="NotEmptyNullableModel.cs" company="">
-//   Copyright (c) RzR. All rights reserved.
-//  </copyright>
-// 
-//  <summary>
-//  </summary>
-// ***********************************************************************
+﻿#region U S I N G
 
-using AttributeValidator.Attributes.Require;
+using RzR.Validation.Attributes.Attributes.Require;
 using System;
+
+#endregion
 
 namespace ModelAttributeValidationTests.Models.NotEmpty
 {
@@ -27,7 +15,7 @@ namespace ModelAttributeValidationTests.Models.NotEmpty
         [ValRequiredNotEmpty]
         public string Name { get; set; }
 
-        [ValRequiredNotEmpty]
+        [ValRequiredNotEmpty] 
         public string Code { get; set; }
 
         [ValRequiredNotEmpty]

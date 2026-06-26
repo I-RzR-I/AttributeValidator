@@ -1,20 +1,8 @@
-﻿// ***********************************************************************
-//  Assembly         : RzR.Shared.Attributes.ModelAttributeValidationTests
-//  Author           : RzR
-//  Created On       : 2024-04-23 20:39
-// 
-//  Last Modified By : RzR
-//  Last Modified On : 2024-04-23 20:39
-// ***********************************************************************
-//  <copyright file="NotDefaultModel.cs" company="">
-//   Copyright (c) RzR. All rights reserved.
-//  </copyright>
-// 
-//  <summary>
-//  </summary>
-// ***********************************************************************
+﻿#region U S I N G
 
-using AttributeValidator.Attributes.Require;
+using RzR.Validation.Attributes.Attributes.Require;
+
+#endregion
 
 namespace ModelAttributeValidationTests.Models.NotDefault
 {
@@ -22,14 +10,14 @@ namespace ModelAttributeValidationTests.Models.NotDefault
     {
         [ValRequiredNotDefault]
         public int Id { get; set; }
-        
-        [ValRequiredNotDefault]
+
+        [ValRequiredNotDefault] 
         public string Name { get; set; }
-        
-        [ValRequiredNotDefault]
+
+        [ValRequiredNotDefault] 
         public string Code { get; set; }
 
-        [ValRequiredNotDefault]
+        [ValRequiredNotDefault] 
         public bool IsActive { get; set; }
     }
 }

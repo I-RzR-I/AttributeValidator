@@ -1,23 +1,11 @@
-﻿// ***********************************************************************
-//  Assembly         : RzR.Shared.Attributes.ModelAttributeValidationTests
-//  Author           : RzR
-//  Created On       : 2024-04-23 22:49
-// 
-//  Last Modified By : RzR
-//  Last Modified On : 2024-04-23 22:49
-// ***********************************************************************
-//  <copyright file="ValidationPositiveTests.cs" company="">
-//   Copyright (c) RzR. All rights reserved.
-//  </copyright>
-// 
-//  <summary>
-//  </summary>
-// ***********************************************************************
+#region U S I N G
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ModelAttributeValidationTests.Models.Positive;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+
+#endregion
 
 namespace ModelAttributeValidationTests.Tests.Positive
 {
@@ -27,8 +15,8 @@ namespace ModelAttributeValidationTests.Tests.Positive
         [TestMethod]
         public void Positive_False_Test()
         {
-            var model = new PositiveModel() { };
-            var context = new ValidationContext(model, serviceProvider: null, items: null);
+            var model = new PositiveModel();
+            var context = new ValidationContext(model, null, null);
             var validationResults = new List<ValidationResult>();
 
             var isValid = Validator.TryValidateObject(model, context, validationResults, true);
@@ -39,7 +27,7 @@ namespace ModelAttributeValidationTests.Tests.Positive
         [TestMethod]
         public void Positive_False_Test_1()
         {
-            var model = new PositiveModel()
+            var model = new PositiveModel
             {
                 LongNumber = 0,
                 DecimalNumber = 0,
@@ -49,7 +37,7 @@ namespace ModelAttributeValidationTests.Tests.Positive
                 UnSignedShortNumber = 0,
                 IntNumber = 0
             };
-            var context = new ValidationContext(model, serviceProvider: null, items: null);
+            var context = new ValidationContext(model, null, null);
             var validationResults = new List<ValidationResult>();
 
             var isValid = Validator.TryValidateObject(model, context, validationResults, true);
@@ -60,7 +48,7 @@ namespace ModelAttributeValidationTests.Tests.Positive
         [TestMethod]
         public void Positive_False_Test_2()
         {
-            var model = new PositiveModel()
+            var model = new PositiveModel
             {
                 LongNumber = 0,
                 DecimalNumber = 0,
@@ -69,7 +57,7 @@ namespace ModelAttributeValidationTests.Tests.Positive
                 ShortNumber = 0,
                 UnSignedShortNumber = 0
             };
-            var context = new ValidationContext(model, serviceProvider: null, items: null);
+            var context = new ValidationContext(model, null, null);
             var validationResults = new List<ValidationResult>();
 
             var isValid = Validator.TryValidateObject(model, context, validationResults, true);
@@ -80,7 +68,7 @@ namespace ModelAttributeValidationTests.Tests.Positive
         [TestMethod]
         public void Positive_False_Test_3()
         {
-            var model = new PositiveModel()
+            var model = new PositiveModel
             {
                 LongNumber = 1,
                 DecimalNumber = 0,
@@ -89,7 +77,7 @@ namespace ModelAttributeValidationTests.Tests.Positive
                 ShortNumber = 0,
                 UnSignedShortNumber = 0
             };
-            var context = new ValidationContext(model, serviceProvider: null, items: null);
+            var context = new ValidationContext(model, null, null);
             var validationResults = new List<ValidationResult>();
 
             var isValid = Validator.TryValidateObject(model, context, validationResults, true);
@@ -100,7 +88,7 @@ namespace ModelAttributeValidationTests.Tests.Positive
         [TestMethod]
         public void Positive_True_Test()
         {
-            var model = new PositiveModel()
+            var model = new PositiveModel
             {
                 LongNumber = 1,
                 DecimalNumber = 1,
@@ -109,7 +97,7 @@ namespace ModelAttributeValidationTests.Tests.Positive
                 ShortNumber = 1,
                 UnSignedShortNumber = 1
             };
-            var context = new ValidationContext(model, serviceProvider: null, items: null);
+            var context = new ValidationContext(model, null, null);
             var validationResults = new List<ValidationResult>();
 
             var isValid = Validator.TryValidateObject(model, context, validationResults, true);
@@ -120,7 +108,7 @@ namespace ModelAttributeValidationTests.Tests.Positive
         [TestMethod]
         public void Positive_True_Test_2()
         {
-            var model = new PositiveModel()
+            var model = new PositiveModel
             {
                 LongNumber = 1,
                 DecimalNumber = 1,
@@ -130,7 +118,7 @@ namespace ModelAttributeValidationTests.Tests.Positive
                 UnSignedShortNumber = 1,
                 IntNumber = 0
             };
-            var context = new ValidationContext(model, serviceProvider: null, items: null);
+            var context = new ValidationContext(model, null, null);
             var validationResults = new List<ValidationResult>();
 
             var isValid = Validator.TryValidateObject(model, context, validationResults, true);

@@ -1,20 +1,8 @@
-﻿// ***********************************************************************
-//  Assembly         : RzR.Shared.Attributes.ModelAttributeValidationTests
-//  Author           : RzR
-//  Created On       : 2024-04-23 22:40
-// 
-//  Last Modified By : RzR
-//  Last Modified On : 2024-04-23 22:40
-// ***********************************************************************
-//  <copyright file="PositiveModel.cs" company="">
-//   Copyright (c) RzR. All rights reserved.
-//  </copyright>
-// 
-//  <summary>
-//  </summary>
-// ***********************************************************************
+﻿#region U S I N G
 
-using AttributeValidator.Attributes.Require;
+using RzR.Validation.Attributes.Attributes.Require;
+
+#endregion
 
 namespace ModelAttributeValidationTests.Models.Positive
 {
@@ -38,7 +26,7 @@ namespace ModelAttributeValidationTests.Models.Positive
         [ValRequiredPositive]
         public float? FloatNumber { get; set; }
 
-        [ValRequiredPositive]
+        [ValRequiredPositive] 
         public double? DoubleNumber { get; set; }
     }
 }
