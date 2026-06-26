@@ -1,35 +1,36 @@
 ﻿// ***********************************************************************
-//  Assembly         : RzR.Shared.Attributes.AttributeValidator
-//  Author           : RzR
-//  Created On       : 2024-04-23 17:58
+//  Assembly          : RzR.Shared.Attributes.AttributeValidator
+//  Author            : RzR
+//  Created           : 25-06-2026 23:06
 // 
 //  Last Modified By : RzR
-//  Last Modified On : 2024-04-24 20:33
-// ***********************************************************************
-//  <copyright file="ValRequiredPositiveAttribute.cs" company="">
-//   Copyright (c) RzR. All rights reserved.
+//  Last Modified On : 25-06-2026 23:29
+//  ***********************************************************************
+//  <copyright file="ValRequiredPositiveAttribute.cs" company="RzR SOFT & TECH">
+//      Copyright (c) RzR. All rights reserved.
 //  </copyright>
-// 
-//  <summary>
-//  </summary>
-// ***********************************************************************
+//  <contact>
+//      https://iamrzr.dev/contact
+//  </contact>
+//  <summary></summary>
+//  ***********************************************************************
 
-#region U S A G E S
+#region U S I N G
 
-using AttributeValidator.Extensions;
-using AttributeValidator.Resources;
+using RzR.Validation.Attributes.Extensions;
+using RzR.Validation.Attributes.Resources;
 using System;
 using System.ComponentModel.DataAnnotations;
 
 #endregion
 
-namespace AttributeValidator.Attributes.Require
+namespace RzR.Validation.Attributes.Attributes.Require
 {
     /// -------------------------------------------------------------------------------------------------
     /// <summary>
     ///     Attribute for value required positive.
     /// </summary>
-    /// <seealso cref="T:System.ComponentModel.DataAnnotations.ValidationAttribute"/>
+    /// <seealso cref="T:System.ComponentModel.DataAnnotations.ValidationAttribute" />
     /// =================================================================================================
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter)]
     public class ValRequiredPositiveAttribute : ValidationAttribute
@@ -56,16 +57,12 @@ namespace AttributeValidator.Attributes.Require
 #endif
 
 #if NETSTANDARD1_1
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
-        {
-            var message = string.Format(Message.DefaultErrorMessage_NotNull, validationContext.MemberName);
-
-            return ValidateObject(value) ? ValidationResult.Success : new ValidationResult(message);
-        }
+            => ValidateObject(value) ? ValidationResult.Success : new ValidationResult(FormatErrorMessage(validationContext.MemberName));
 #endif
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string FormatErrorMessage(string name)
             => string.IsNullOrEmpty(CustomUserMessage)
                 ? string.Format(Message.DefaultErrorMessage_Positive, name)
@@ -87,12 +84,24 @@ namespace AttributeValidator.Attributes.Require
 
             var type = value.GetType().GetNonNullableType();
 
-            if (type.IsNumberNoPointType())
-                return Convert.ToInt64(value) > 0;
-            if (type.IsNumberUnSignedNoPointType())
-                return Convert.ToUInt64(value) > 0;
-            if (type.IsNumberWithPointType())
-                return Convert.ToDecimal(value) > 0;
+            try
+            {
+                if (type.IsNumberNoPointType())
+                    return Convert.ToInt64(value) > 0;
+
+                if (type.IsNumberUnSignedNoPointType())
+                    return Convert.ToUInt64(value) > 0;
+
+                if (type.IsNumberWithPointType())
+                    return Convert.ToDecimal(value) > 0;
+            }
+            catch (Exception ex) when (ex is FormatException 
+                                       || ex is OverflowException
+                                       || ex is InvalidCastException)
+            {
+                return false;
+            }
+
             return false;
         }
     }

@@ -1,29 +1,30 @@
 ﻿// ***********************************************************************
-//  Assembly         : RzR.Shared.Attributes.AttributeValidator
-//  Author           : RzR
-//  Created On       : 2024-04-24 00:24
+//  Assembly          : RzR.Shared.Attributes.AttributeValidator
+//  Author            : RzR
+//  Created           : 25-06-2026 23:06
 // 
 //  Last Modified By : RzR
-//  Last Modified On : 2024-04-24 19:45
-// ***********************************************************************
-//  <copyright file="ValGreaterThanAttribute.cs" company="">
-//   Copyright (c) RzR. All rights reserved.
+//  Last Modified On : 25-06-2026 23:29
+//  ***********************************************************************
+//  <copyright file="ValGreaterThanAttribute.cs" company="RzR SOFT & TECH">
+//      Copyright (c) RzR. All rights reserved.
 //  </copyright>
-// 
-//  <summary>
-//  </summary>
-// ***********************************************************************
+//  <contact>
+//      https://iamrzr.dev/contact
+//  </contact>
+//  <summary></summary>
+//  ***********************************************************************
 
-#region U S A G E S
+#region U S I N G
 
-using AttributeValidator.Extensions;
-using AttributeValidator.Resources;
+using RzR.Validation.Attributes.Extensions;
+using RzR.Validation.Attributes.Resources;
 using System;
 using System.ComponentModel.DataAnnotations;
 
 #endregion
 
-namespace AttributeValidator.Attributes.Greater
+namespace RzR.Validation.Attributes.Attributes.Greater
 {
     /// -------------------------------------------------------------------------------------------------
     /// <summary>
@@ -55,7 +56,8 @@ namespace AttributeValidator.Attributes.Greater
         /// <param name="greaterThan">The greater than.</param>
         /// <param name="userMessage">(Optional) The user message.</param>
         /// =================================================================================================
-        public ValGreaterThanAttribute(object greaterThan, string userMessage = null) : base(string.Empty)
+        public ValGreaterThanAttribute(object greaterThan, string userMessage = null) 
+            : base(string.Empty)
         {
             GreaterThanValue = greaterThan;
             CustomUserMessage = userMessage;
@@ -67,20 +69,18 @@ namespace AttributeValidator.Attributes.Greater
 #endif
 
 #if NETSTANDARD1_1
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
-        {
-            var userMessage = string.Format(Message.DefaultErrorMessage_NotNull, validationContext.MemberName);
-
-            return ValidateObject(value) ? ValidationResult.Success : new ValidationResult(userMessage);
-        }
+            => ValidateObject(value)
+                ? ValidationResult.Success
+                : new ValidationResult(FormatErrorMessage(validationContext.MemberName));
 #endif
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string FormatErrorMessage(string name)
             => string.IsNullOrEmpty(CustomUserMessage)
-            ? string.Format(Message.DefaultErrorMessage_GreaterThan, name, GreaterThanValue)
-            : CustomUserMessage;
+                ? string.Format(Message.DefaultErrorMessage_GreaterThan, name, GreaterThanValue)
+                : CustomUserMessage;
 
         /// -------------------------------------------------------------------------------------------------
         /// <summary>
@@ -92,23 +92,6 @@ namespace AttributeValidator.Attributes.Greater
         /// </returns>
         /// =================================================================================================
         private bool ValidateObject(object value)
-        {
-            if (value == null)
-                return false;
-
-            var type = value.GetType().GetNonNullableType();
-
-            if (type.IsNumberNoPointType())
-                return Convert.ToInt64(value) > Convert.ToInt64(GreaterThanValue);
-            if (type.IsNumberUnSignedNoPointType())
-                return Convert.ToUInt64(value) > Convert.ToUInt64(GreaterThanValue);
-            if (type.IsNumberWithPointType())
-                return Convert.ToDecimal(value) > Convert.ToDecimal(GreaterThanValue);
-            if (type.IsDateType())
-                return Convert.ToDateTime(value) > Convert.ToDateTime(GreaterThanValue);
-            if (type.IsTimeSpanType())
-                return TimeSpan.Parse(value.ToString()) > TimeSpan.Parse(GreaterThanValue.ToString());
-            return false;
-        }
+            => ValueComparer.TryCompare(value, GreaterThanValue, out var cmp) && cmp > 0;
     }
 }

@@ -1,20 +1,8 @@
-﻿// ***********************************************************************
-//  Assembly         : RzR.Shared.Attributes.ModelAttributeValidationTests
-//  Author           : RzR
-//  Created On       : 2024-04-23 21:32
-// 
-//  Last Modified By : RzR
-//  Last Modified On : 2024-04-23 21:32
-// ***********************************************************************
-//  <copyright file="NotNullModel.cs" company="">
-//   Copyright (c) RzR. All rights reserved.
-//  </copyright>
-// 
-//  <summary>
-//  </summary>
-// ***********************************************************************
+﻿#region U S I N G
 
-using AttributeValidator.Attributes.Require;
+using RzR.Validation.Attributes.Attributes.Require;
+
+#endregion
 
 namespace ModelAttributeValidationTests.Models.NotNull
 {
@@ -26,10 +14,10 @@ namespace ModelAttributeValidationTests.Models.NotNull
         [ValRequiredNotNull]
         public string Name { get; set; }
 
-        [ValRequiredNotNull]
+        [ValRequiredNotNull] 
         public string Code { get; set; }
 
-        [ValRequiredNotNull]
+        [ValRequiredNotNull] 
         public bool IsActive { get; set; }
     }
 }

@@ -1,22 +1,11 @@
-﻿// ***********************************************************************
-//  Assembly         : RzR.Shared.Attributes.ModelAttributeValidationTests
-//  Author           : RzR
-//  Created On       : 2024-04-23 21:00
-// 
-//  Last Modified By : RzR
-//  Last Modified On : 2024-04-23 21:00
-// ***********************************************************************
-//  <copyright file="ValidationNotDefaultNullableTests.cs" company="">
-//   Copyright (c) RzR. All rights reserved.
-//  </copyright>
-// 
-//  <summary>
-//  </summary>
-// ***********************************************************************
+#region U S I N G
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using ModelAttributeValidationTests.Models.NotDefault;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+
+#endregion
 
 namespace ModelAttributeValidationTests.Tests.NotDefault
 {
@@ -26,8 +15,8 @@ namespace ModelAttributeValidationTests.Tests.NotDefault
         [TestMethod]
         public void NotDefault_Nullable_False_Test2()
         {
-            var model = new Models.NotDefault.NotDefaultNullableModel() { };
-            var context = new ValidationContext(model, serviceProvider: null, items: null);
+            var model = new NotDefaultNullableModel();
+            var context = new ValidationContext(model, null, null);
             var validationResults = new List<ValidationResult>();
 
             var isValid = Validator.TryValidateObject(model, context, validationResults, true);
@@ -38,14 +27,8 @@ namespace ModelAttributeValidationTests.Tests.NotDefault
         [TestMethod]
         public void NotDefault_Nullable_True_Test1()
         {
-            var model = new Models.NotDefault.NotDefaultNullableModel()
-            {
-                Id = 1,
-                Code = "Code1",
-                Name = "Name1",
-                IsActive = true
-            };
-            var context = new ValidationContext(model, serviceProvider: null, items: null);
+            var model = new NotDefaultNullableModel { Id = 1, Code = "Code1", Name = "Name1", IsActive = true };
+            var context = new ValidationContext(model, null, null);
             var validationResults = new List<ValidationResult>();
 
             var isValid = Validator.TryValidateObject(model, context, validationResults, true);
@@ -56,13 +39,8 @@ namespace ModelAttributeValidationTests.Tests.NotDefault
         [TestMethod]
         public void NotDefault_Nullable_False_Test3()
         {
-            var model = new Models.NotDefault.NotDefaultNullableModel()
-            {
-                Id = 1,
-                Code = "Code1",
-                Name = "Name1"
-            };
-            var context = new ValidationContext(model, serviceProvider: null, items: null);
+            var model = new NotDefaultNullableModel { Id = 1, Code = "Code1", Name = "Name1" };
+            var context = new ValidationContext(model, null, null);
             var validationResults = new List<ValidationResult>();
 
             var isValid = Validator.TryValidateObject(model, context, validationResults, true);

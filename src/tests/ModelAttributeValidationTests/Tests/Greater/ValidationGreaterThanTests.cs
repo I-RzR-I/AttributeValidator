@@ -1,23 +1,11 @@
-﻿// ***********************************************************************
-//  Assembly         : RzR.Shared.Attributes.ModelAttributeValidationTests
-//  Author           : RzR
-//  Created On       : 2024-04-24 17:29
-// 
-//  Last Modified By : RzR
-//  Last Modified On : 2024-04-24 17:29
-// ***********************************************************************
-//  <copyright file="ValidationGreaterThanTests.cs" company="">
-//   Copyright (c) RzR. All rights reserved.
-//  </copyright>
-// 
-//  <summary>
-//  </summary>
-// ***********************************************************************
+#region U S I N G
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ModelAttributeValidationTests.Models.Greater;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+
+#endregion
 
 namespace ModelAttributeValidationTests.Tests.Greater
 {
@@ -27,8 +15,8 @@ namespace ModelAttributeValidationTests.Tests.Greater
         [TestMethod]
         public void GreaterThan_False_Test()
         {
-            var model = new GreaterThanModel() { };
-            var context = new ValidationContext(model, serviceProvider: null, items: null);
+            var model = new GreaterThanModel();
+            var context = new ValidationContext(model, null, null);
             var validationResults = new List<ValidationResult>();
 
             var isValid = Validator.TryValidateObject(model, context, validationResults, true);
@@ -39,7 +27,7 @@ namespace ModelAttributeValidationTests.Tests.Greater
         [TestMethod]
         public void GreaterThan_Equals_MinValue_False_Test()
         {
-            var model = new GreaterThanModel()
+            var model = new GreaterThanModel
             {
                 IntNumber = 0,
                 ShortNumber = 1,
@@ -49,7 +37,7 @@ namespace ModelAttributeValidationTests.Tests.Greater
                 DoubleNumber = 1,
                 LongNumber = 1
             };
-            var context = new ValidationContext(model, serviceProvider: null, items: null);
+            var context = new ValidationContext(model, null, null);
             var validationResults = new List<ValidationResult>();
 
             var isValid = Validator.TryValidateObject(model, context, validationResults, true);
@@ -60,7 +48,7 @@ namespace ModelAttributeValidationTests.Tests.Greater
         [TestMethod]
         public void GreaterThan_False_OnDouble_Test()
         {
-            var model = new GreaterThanModel()
+            var model = new GreaterThanModel
             {
                 IntNumber = 0,
                 ShortNumber = 100,
@@ -70,7 +58,7 @@ namespace ModelAttributeValidationTests.Tests.Greater
                 DoubleNumber = 56.89,
                 LongNumber = 100
             };
-            var context = new ValidationContext(model, serviceProvider: null, items: null);
+            var context = new ValidationContext(model, null, null);
             var validationResults = new List<ValidationResult>();
 
             var isValid = Validator.TryValidateObject(model, context, validationResults, true);
@@ -81,7 +69,7 @@ namespace ModelAttributeValidationTests.Tests.Greater
         [TestMethod]
         public void GreaterThan_False_OnDecimal_Test()
         {
-            var model = new GreaterThanModel()
+            var model = new GreaterThanModel
             {
                 IntNumber = 0,
                 ShortNumber = 100,
@@ -91,7 +79,7 @@ namespace ModelAttributeValidationTests.Tests.Greater
                 DoubleNumber = 56.91,
                 LongNumber = 100
             };
-            var context = new ValidationContext(model, serviceProvider: null, items: null);
+            var context = new ValidationContext(model, null, null);
             var validationResults = new List<ValidationResult>();
 
             var isValid = Validator.TryValidateObject(model, context, validationResults, true);
@@ -102,7 +90,7 @@ namespace ModelAttributeValidationTests.Tests.Greater
         [TestMethod]
         public void GreaterThan_MinValue_True_Test()
         {
-            var model = new GreaterThanModel()
+            var model = new GreaterThanModel
             {
                 IntNumber = 0,
                 ShortNumber = 11,
@@ -112,7 +100,7 @@ namespace ModelAttributeValidationTests.Tests.Greater
                 DoubleNumber = 57,
                 LongNumber = 6
             };
-            var context = new ValidationContext(model, serviceProvider: null, items: null);
+            var context = new ValidationContext(model, null, null);
             var validationResults = new List<ValidationResult>();
 
             var isValid = Validator.TryValidateObject(model, context, validationResults, true);
