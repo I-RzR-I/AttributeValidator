@@ -14,7 +14,7 @@ Install-Package RzR.Validation.Attributes
 
 ## Getting started
 
-Decorate your model properties with the attributes you need, then call `Validator.TryValidateObject`. This is the standard `System.ComponentModel.DataAnnotations` validation pipeline - no extra infrastructure or configuration is required.
+Decorate your model properties with the attributes you need, then call `Validator.TryValidateObject`. It's the same validation pipeline built into `System.ComponentModel.DataAnnotations` - there's nothing extra to wire up.
 
 ```csharp
 using RzR.Validation.Attributes.Attributes.Require;
@@ -45,7 +45,7 @@ bool isValid = Validator.TryValidateObject(model,
     results, validateAllProperties: true);
 ```
 
-You can mix these attributes with built-in `System.ComponentModel.DataAnnotations` attributes such as `[Required]`, `[Range]`, and `[StringLength]` on the same property.
+These attributes sit fine alongside the built-in ones - `[Required]`, `[Range]`, `[StringLength]` - on the same property.
 
 ---
 
@@ -53,7 +53,7 @@ You can mix these attributes with built-in `System.ComponentModel.DataAnnotation
 
 ### Custom error message pattern
 
-Every attribute accepts an optional custom error message. For most attributes it is the last constructor parameter, named `userMessage`:
+Every attribute lets you override its default error message. For most of them, that's the last constructor parameter, `userMessage`:
 
 ```csharp
 [ValRequiredNotNull("Username is required.")]
@@ -61,32 +61,32 @@ Every attribute accepts an optional custom error message. For most attributes it
 public string Username { get; set; }
 ```
 
-For the params-based attributes (`ValAllowedValues` and `ValDeniedValues`) the constructor takes `params object[]`, so a trailing string cannot be unambiguously distinguished from a value. Set the inherited `ErrorMessage` property instead:
+`ValAllowedValues` and `ValDeniedValues` break that pattern. Their constructor takes `params object[]`, so a trailing string could just as easily be one of the values you're checking against. Set the inherited `ErrorMessage` property instead:
 
 ```csharp
 [ValAllowedValues("pending", "active", "closed") { ErrorMessage = "Status must be pending, active, or closed." }]
 public string Status { get; set; }
 ```
 
-For the object-level (class-targeted) attributes (`ValAtLeastOneOf`, `ValMutuallyExclusive`, `ValExactlyOneOf`, `ValChronological`) use the same `ErrorMessage` property pattern.
+The object-level attributes - `ValAtLeastOneOf`, `ValMutuallyExclusive`, `ValExactlyOneOf`, `ValChronological` - follow the same rule: set `ErrorMessage`, not a constructor argument.
 
 ### Null is invalid by default
 
-Every non-presence attribute treats null as an invalid value. Each rule is self-contained: a null value can never pass a comparison, string, format, or numeric check. When a field is genuinely optional, design your model so that the property carries a nullable type and only apply non-presence attributes when you know the value is present, or pair them with a presence check and control which attributes run.
+Every non-presence attribute treats null as a failure, not something to skip over. A comparison, string, format, or numeric check will never let a null value pass - each rule stands on its own and doesn't assume some other attribute already dealt with presence. If a field is genuinely optional, give the property a nullable type and only apply non-presence attributes once you know a value is actually there, or gate them behind a presence check.
 
 ### Cross-property and object-level attributes require `validateAllProperties: true`
 
-The conditional attributes (`ValRequiredIf`, `ValRequiredUnless`, `ValCompareProperty`) and the class-targeted attributes (`ValAtLeastOneOf`, `ValMutuallyExclusive`, `ValExactlyOneOf`, `ValChronological`) rely on `ValidationContext` to inspect sibling properties or the object instance. They only execute when you call:
+The conditional attributes (`ValRequiredIf`, `ValRequiredUnless`, `ValCompareProperty`) and the class-targeted attributes (`ValAtLeastOneOf`, `ValMutuallyExclusive`, `ValExactlyOneOf`, `ValChronological`) need `ValidationContext` to look at sibling properties or the object as a whole. That only happens when you call:
 
 ```csharp
 Validator.TryValidateObject(model, new ValidationContext(model), results, validateAllProperties: true);
 ```
 
-They do not fire during per-property MVC model binding.
+They won't fire during per-property MVC model binding, so don't rely on them there.
 
 ### ValOp enum
 
-The conditional and cross-property attributes use the `ValOp` enum (namespace `RzR.Validation.Attributes.Common`) to express comparison operators:
+The conditional and cross-property attributes express their comparisons through the `ValOp` enum, in namespace `RzR.Validation.Attributes.Common`:
 
 | Member | Meaning |
 | --- | --- |
@@ -103,7 +103,7 @@ The conditional and cross-property attributes use the `ValOp` enum (namespace `R
 
 **Namespace:** `RzR.Validation.Attributes.Attributes.Require`
 
-These attributes check whether a value is meaningfully present. They are the foundation for optional/required field semantics. Use them alone or in combination.
+These check whether a value is meaningfully present - the basic building blocks for optional-vs-required semantics. Use one on its own or stack a few together.
 
 | Attribute | What passes |
 | --- | --- |
@@ -160,7 +160,7 @@ public class RegistrationRequest
 - `RzR.Validation.Attributes.Attributes.Range` - `ValBetween`
 - `RzR.Validation.Attributes.Attributes.Common` - `ValEqual`, `ValNotEqual`
 
-These attributes compare the decorated value against a fixed constant. They work on any numeric type and on any other type that supports `IComparable`. Numeric values of different widths (e.g. `int` vs `long`) compare by value. Null always fails.
+These compare the decorated value against a fixed constant. They work with any numeric type and anything else that implements `IComparable`. Numeric values of different widths - `int` against `long`, say - still compare correctly by value, and null always fails.
 
 **Constructors:**
 
@@ -174,7 +174,7 @@ ValEqualAttribute(object comparand, string userMessage = null)
 ValNotEqualAttribute(object comparand, string userMessage = null)
 ```
 
-`ValBetween` defaults to inclusive bounds (`[min, max]`). Pass `inclusive: false` for exclusive bounds `(min, max)`.
+`ValBetween` is inclusive by default (`[min, max]`). Pass `inclusive: false` if you want exclusive bounds `(min, max)` instead.
 
 **Example:**
 
@@ -230,9 +230,9 @@ ValAllowedValuesAttribute(params object[] allowedValues)
 ValDeniedValuesAttribute(params object[] deniedValues)
 ```
 
-`ValCollectionNotEmpty` works on `ICollection`, `IEnumerable`, and strings. For strings it uses `string.IsNullOrEmpty`; for `ICollection` it checks `Count > 0`; for other enumerables it advances the enumerator once.
+`ValCollectionNotEmpty` treats `ICollection`, `IEnumerable`, and strings a little differently: strings go through `string.IsNullOrEmpty`, `ICollection` checks `Count > 0`, and any other enumerable just gets its enumerator advanced once to see if there's anything there.
 
-`ValAllowedValues` and `ValDeniedValues` use value-aware equality (same as `object.Equals`). Null may appear as an explicit entry. To set a custom error message, use the `ErrorMessage` property - you cannot use a trailing `userMessage` parameter because the constructor is `params`-based.
+`ValAllowedValues` and `ValDeniedValues` compare with value-aware equality, the same as `object.Equals`, and null can be one of the listed entries. Because the constructor is `params`-based, there's no room for a trailing `userMessage` - set `ErrorMessage` instead.
 
 **Example:**
 
@@ -268,7 +268,7 @@ public string Country { get; set; }
 
 **Namespace:** `RzR.Validation.Attributes.Attributes.Conditional`
 
-These attributes read sibling property values at runtime via `ValidationContext`. They only run when you call `Validator.TryValidateObject(..., validateAllProperties: true)`. They do not fire during per-property MVC model binding.
+These read sibling property values at runtime through `ValidationContext`, so they only run when you call `Validator.TryValidateObject(..., validateAllProperties: true)` - not during per-property MVC model binding.
 
 **Constructors:**
 
@@ -282,7 +282,7 @@ ValComparePropertyAttribute(string otherProperty, ValOp op, string userMessage =
 - `ValRequiredUnless` - the decorated property must be populated when `otherProperty op comparand` is false (i.e., required unless the condition holds).
 - `ValCompareProperty` - the decorated property must satisfy `thisValue op otherPropertyValue`.
 
-When the sibling property cannot be found or the values are not comparable, ordering comparisons fail closed (validation error returned).
+If the sibling property can't be found, or the two values just aren't comparable, ordering comparisons fail closed - you get a validation error rather than a silent pass.
 
 **Example:**
 
@@ -330,9 +330,9 @@ bool isValid = Validator.TryValidateObject(
 
 **Namespace:** `RzR.Validation.Attributes.Attributes.Object`
 
-These attributes are placed on the class declaration, not on individual properties. They inspect named properties via reflection at validation time. They run only when you call `Validator.TryValidateObject(..., validateAllProperties: true)`.
+These go on the class declaration itself, not on individual properties. At validation time they use reflection to inspect the named properties, and like the conditional attributes, they only run when you call `Validator.TryValidateObject(..., validateAllProperties: true)`.
 
-All four support `AllowMultiple = true`, so you can declare multiple independent groups on the same class.
+All four allow `AllowMultiple = true`, so nothing stops you from declaring several independent groups on the same class.
 
 **Constructors:**
 
@@ -350,9 +350,9 @@ ValChronologicalAttribute(params string[] propertyNames)
 | `ValExactlyOneOf` | Exactly one named property is populated |
 | `ValChronological` | Named properties form a non-decreasing sequence (null values skipped) |
 
-`ValChronological` is designed for `DateTime` and `DateTime?` properties but works on any type supported by the internal `ValueComparer`. If a consecutive pair cannot be compared, validation fails closed.
+`ValChronological` is built with `DateTime` and `DateTime?` in mind, though it works with any type the internal `ValueComparer` supports. If it hits a consecutive pair it can't compare, validation fails closed.
 
-To set a custom error message on these attributes, set the `ErrorMessage` property:
+Same story for custom error messages here - set `ErrorMessage`:
 
 ```csharp
 [ValAtLeastOneOf("Email", "Phone") { ErrorMessage = "Provide at least one contact method." }]
@@ -393,7 +393,7 @@ public class CheckoutRequest
 
 **Namespace:** `RzR.Validation.Attributes.Attributes.Date`
 
-These attributes accept `DateTime` and (where noted) `DateTimeOffset`. Null always fails. When `useUtc` is `true` (the default), comparisons are made against `DateTime.UtcNow` or `DateTimeOffset.UtcNow`. Pass `useUtc: false` to compare against local time.
+These accept `DateTime` and, where noted, `DateTimeOffset`. Null always fails. With `useUtc` at its default of `true`, comparisons run against `DateTime.UtcNow` or `DateTimeOffset.UtcNow`; pass `useUtc: false` if you'd rather compare against local time.
 
 **Constructors:**
 
@@ -437,7 +437,7 @@ public class EventRequest
 
 **Namespace:** `RzR.Validation.Attributes.Attributes.Numeric`
 
-All numeric attributes reject null and values that cannot be converted to the target numeric type.
+All the numeric attributes reject null, along with anything that can't be converted to the target numeric type.
 
 **Constructors:**
 
@@ -491,7 +491,7 @@ public class LocationPrice
 
 **Namespace:** `RzR.Validation.Attributes.Attributes.String`
 
-All string attributes reject null and non-string values. Empty strings are also rejected by `ValAlpha`, `ValAlphaNumeric`, and `ValNumericString`.
+All string attributes reject null and anything that isn't a string. `ValAlpha`, `ValAlphaNumeric`, and `ValNumericString` go a step further and reject empty strings too.
 
 **Constructors:**
 
@@ -509,7 +509,7 @@ ValAlphaNumericAttribute(string userMessage = null)
 ValNumericStringAttribute(string userMessage = null)
 ```
 
-Length bounds are inclusive. `ValRegex` applies a 2-second match timeout on net45 and netstandard2.0 to prevent ReDoS; invalid patterns or timeouts fail closed.
+Length bounds are inclusive throughout. `ValRegex` applies a 2-second match timeout on net45 and netstandard2.0 to guard against ReDoS; an invalid pattern or a timeout both fail closed.
 
 `ValAlpha` - only ASCII letters (a–z, A–Z).
 `ValAlphaNumeric` - only ASCII letters and digits (a–z, A–Z, 0–9).
@@ -633,14 +633,14 @@ ValPostalCodeAttribute(string country = "US", string userMessage = null)
 
 Notes:
 
-- `ValEmail` checks structure only (max 254 chars, local part max 64 chars, basic format regex). No DNS or mailbox verification.
-- `ValUrl` accepts HTTP and HTTPS absolute URLs by default. Pass `requireHttps: true` to reject plain HTTP.
-- `ValCreditCard` validates the Luhn checksum. Spaces and hyphens are stripped before checking. Does not verify the card number against a payment network.
+- `ValEmail` only checks structure - max 254 characters overall, max 64 in the local part, matched against a basic format regex. It doesn't do DNS or mailbox verification.
+- `ValUrl` accepts absolute HTTP and HTTPS URLs by default. Pass `requireHttps: true` if plain HTTP shouldn't be allowed.
+- `ValCreditCard` runs the Luhn checksum after stripping spaces and hyphens. It doesn't check the number against an actual payment network.
 - `ValUsername` requires the string to start with an alphanumeric character; the remainder may contain alphanumeric characters, underscores, or hyphens.
 - `ValCountryCode` validates against the full ISO 3166-1 alpha-2 code list (case-insensitive).
-- `ValCultureCode` validates BCP-47 structural format (e.g. `"en"`, `"en-US"`, `"zh-Hans"`, `"zh-Hans-CN"`). Does not verify against the IANA language subtag registry.
+- `ValCultureCode` checks the structural shape of a BCP-47 tag - `"en"`, `"en-US"`, `"zh-Hans"`, `"zh-Hans-CN"` - without checking it against the IANA language subtag registry.
 - `ValSlug` requires lowercase letters and digits separated by single hyphens; must start and end with an alphanumeric character.
-- `ValPostalCode` supports country-specific structural patterns for 60+ countries identified by ISO 3166-1 alpha-2 codes. Falls back to a generic alphanumeric pattern for unlisted country codes. Patterns validate structure only - not membership in an official postal registry.
+- `ValPostalCode` applies country-specific structural patterns for 60+ ISO 3166-1 alpha-2 codes, falling back to a generic alphanumeric pattern for anything not on the list. Like the others, it checks structure only, not membership in an official postal registry.
 
 **Example:**
 
@@ -690,13 +690,13 @@ public class UserProfile
 
 ### ValEnum
 
-Validates that a value is a defined member of a specified enum type.
+Checks that a value is a defined member of the enum type you pass in.
 
 ```csharp
 ValEnumAttribute(Type enumType, string propertyName, string userMessage = null)
 ```
 
-`propertyName` is used in the default error message. If you pass an empty string, the validation framework supplies the property name automatically.
+`propertyName` feeds into the default error message. Pass an empty string and the validation framework fills in the property name for you.
 
 `EnumValidation` is a deprecated `[Obsolete]` back-compatibility alias for `ValEnumAttribute`. Use `ValEnum` in new code.
 
@@ -717,13 +717,13 @@ public class UpdateOrderRequest
 
 ### ValAjaxOnly
 
-Validates that a `bool` property is `true`, indicating the caller has flagged the request as an AJAX request.
+Checks that a `bool` property is `true` - the caller's own claim that this is an AJAX request.
 
 ```csharp
 ValAjaxOnlyAttribute(string userMessage = null)
 ```
 
-This is not a security control. Any client can set the underlying field to `true` regardless of whether the request is actually an AJAX request. Real AJAX enforcement must be performed server-side, typically via an MVC `ActionFilter` that reads the `X-Requested-With: XMLHttpRequest` header. This attribute does not substitute for authentication, authorization, or anti-CSRF tokens.
+Treat it as a hint, not a security control - any client can set that field to `true` whether or not the request is actually AJAX. Real enforcement belongs server-side, typically in an MVC `ActionFilter` that reads the `X-Requested-With: XMLHttpRequest` header. It's no substitute for authentication, authorization, or anti-CSRF tokens.
 
 `AjaxOnly` is a deprecated `[Obsolete]` back-compatibility alias. Use `ValAjaxOnly` in new code.
 
@@ -746,7 +746,7 @@ public class AjaxRequest
 
 ## Custom error messages
 
-Most attributes accept `userMessage` as the last constructor argument:
+Most attributes take `userMessage` as their last constructor argument:
 
 ```csharp
 public class OrderRequest
@@ -765,7 +765,7 @@ public class OrderRequest
 }
 ```
 
-For `ValAllowedValues`, `ValDeniedValues`, and the object-level attributes, set `ErrorMessage` via object initializer syntax:
+The exceptions - `ValAllowedValues`, `ValDeniedValues`, and the object-level attributes - need `ErrorMessage` set through object initializer syntax instead:
 
 ```csharp
 [ValAllowedValues("card", "invoice", "wallet") { ErrorMessage = "Payment method is not supported." }]
@@ -779,7 +779,7 @@ public class ContactRequest { ... }
 
 ## Reading validation results
 
-After calling `Validator.TryValidateObject`, iterate `validationResults` to collect error messages per property:
+Once `Validator.TryValidateObject` returns, loop over the results list to pull out an error message per property:
 
 ```csharp
 using System.Collections.Generic;
@@ -805,4 +805,4 @@ if (!isValid)
 }
 ```
 
-Object-level attribute errors (`ValAtLeastOneOf`, etc.) have an empty `MemberNames` collection because they are not tied to a single property.
+Object-level attribute errors - `ValAtLeastOneOf` and its siblings - come back with an empty `MemberNames` collection, since they aren't tied to any single property.

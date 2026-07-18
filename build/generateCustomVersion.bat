@@ -31,8 +31,8 @@ set destinationBranch=%userDefinedDestinationBranch%
 set customVersion=%userDefinedVersion%
 set solutionPath=$('..\src\RzR.Shared.Attributes.sln')
 set packResultPath=$('..\nuget\')
-set packProjectsPath=$('..\src\AttributeValidator\AttributeValidator.csproj')
-set testProjectsPath=$('..\src\tests\ModelAttributeValidationTests\ModelAttributeValidationTests.csproj')
+set packProjectsPath=$('..\src\AttributeValidator\AttributeValidator.csproj','..\src\AttributeValidator.AspNetCore\AttributeValidator.AspNetCore.csproj','..\src\AttributeValidator.Mvvm\AttributeValidator.Mvvm.csproj')
+set testProjectsPath=$('..\src\tests\ModelAttributeValidationTests\ModelAttributeValidationTests.csproj','..\src\tests\AttributeValidator.AspNetCore.Tests\AttributeValidator.AspNetCore.Tests.csproj','..\src\tests\AttributeValidator.Mvvm.Tests\AttributeValidator.Mvvm.Tests.csproj')
 
 
 echo :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::

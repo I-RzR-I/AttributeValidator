@@ -1,0 +1,57 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>net8.0</TargetFrameworks>
+		<Nullable>disable</Nullable>
+		<ImplicitUsings>disable</ImplicitUsings>
+		<RootNamespace>RzR.Validation.Attributes.AspNetCore</RootNamespace>
+		<AssemblyName>RzR.Validation.Attributes.AspNetCore</AssemblyName>
+		<LangVersion>latest</LangVersion>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<Authors>RzR</Authors>
+		<Copyright>RzR</Copyright>
+		<Owners>RzR</Owners>
+		<PackageLicenseFile>LICENSE</PackageLicenseFile>
+		<PackageIcon>PackageIcon.png</PackageIcon>
+		<NoWarn>$(NoWarn);CS8032</NoWarn>
+		<EnableNETAnalyzers>false</EnableNETAnalyzers>
+		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+		<PackageTags>Attribute;Validator;Validation;DataAnnotations;AspNetCore;MinimalApi;EndpointFilter;MVC;ActionFilter;ProblemDetails;ValidationProblem;RzR;</PackageTags>
+		<RepositoryUrl>https://github.com/I-RzR-I/AttributeValidator</RepositoryUrl>
+		<PackageProjectUrl>https://github.com/I-RzR-I/AttributeValidator</PackageProjectUrl>
+		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+		<PackageDescription>ASP.NET Core integration for RzR.Validation.Attributes. Automatically triggers the DataAnnotations validation attributes on Minimal API endpoints (endpoint filter via WithValidation) and MVC actions (ValidateModel / action filter), returning RFC 7807 ValidationProblemDetails (application/problem+json) responses with a configurable status code.</PackageDescription>
+		<Summary>ASP.NET Core auto-validation for RzR.Validation.Attributes: a Minimal API endpoint filter and an MVC action filter that return RFC 7807 problem responses.</Summary>
+		<PackageTitle>RzR.Validation.Attributes.AspNetCore (AttributeValidator.AspNetCore)</PackageTitle>
+		<Title>RzR.Validation.Attributes.AspNetCore (AttributeValidator.AspNetCore)</Title>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Include="..\shared\GeneralAssemblyInfo.cs" Link="Properties\GeneralAssemblyInfo.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="..\..\LICENSE">
+			<Pack>True</Pack>
+			<PackagePath></PackagePath>
+		</None>
+		<None Include="..\..\assets\PackageIcon.png">
+			<Pack>True</Pack>
+			<PackagePath></PackagePath>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+		<ProjectReference Include="..\AttributeValidator\AttributeValidator.csproj" />
+	</ItemGroup>
+
+</Project>

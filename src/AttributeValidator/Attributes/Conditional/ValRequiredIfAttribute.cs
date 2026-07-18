@@ -18,7 +18,7 @@
 #region U S I N G
 
 using RzR.Validation.Attributes.Common;
-using RzR.Validation.Attributes.Extensions;
+using RzR.Validation.Attributes.Extensions.Internal;
 using RzR.Validation.Attributes.Resources;
 using System;
 using System.ComponentModel.DataAnnotations;

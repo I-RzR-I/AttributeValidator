@@ -1,10 +1,10 @@
 ﻿// ***********************************************************************
 //  Assembly          : RzR.Shared.Attributes.AttributeValidator
 //  Author            : RzR
-//  Created           : 25-06-2026 23:06
+//  Created           : 27-06-2026 01:06
 // 
 //  Last Modified By : RzR
-//  Last Modified On : 26-06-2026 20:22
+//  Last Modified On : 18-07-2026 13:11
 //  ***********************************************************************
 //  <copyright file="TypeExtensions.cs" company="RzR SOFT & TECH">
 //      Copyright (c) RzR. All rights reserved.
@@ -22,7 +22,7 @@ using System.Collections.Generic;
 
 #endregion
 
-namespace RzR.Validation.Attributes.Extensions
+namespace RzR.Validation.Attributes.Extensions.Internal
 {
     /// -------------------------------------------------------------------------------------------------
     /// <summary>

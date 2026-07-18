@@ -1,10 +1,10 @@
 ﻿// ***********************************************************************
 //  Assembly          : RzR.Shared.Attributes.AttributeValidator
 //  Author            : RzR
-//  Created           : 25-06-2026 23:06
+//  Created           : 27-06-2026 01:06
 // 
 //  Last Modified By : RzR
-//  Last Modified On : 26-06-2026 20:22
+//  Last Modified On : 18-07-2026 13:09
 //  ***********************************************************************
 //  <copyright file="MemberHelper.cs" company="RzR SOFT & TECH">
 //      Copyright (c) RzR. All rights reserved.
@@ -23,7 +23,7 @@ using System.Reflection;
 
 #endregion
 
-namespace RzR.Validation.Attributes.Extensions
+namespace RzR.Validation.Attributes.Extensions.Internal
 {
     /// -------------------------------------------------------------------------------------------------
     /// <summary>
@@ -127,11 +127,16 @@ namespace RzR.Validation.Attributes.Extensions
 
                     switch (op)
                     {
-                        case ValOp.GreaterThan: return c > 0;
-                        case ValOp.GreaterThanOrEqual: return c >= 0;
-                        case ValOp.LessThan: return c < 0;
-                        case ValOp.LessThanOrEqual: return c <= 0;
-                        default: return false;
+                        case ValOp.GreaterThan:
+                            return c > 0;
+                        case ValOp.GreaterThanOrEqual:
+                            return c >= 0;
+                        case ValOp.LessThan:
+                            return c < 0;
+                        case ValOp.LessThanOrEqual:
+                            return c <= 0;
+                        default:
+                            return false;
                     }
             }
         }
