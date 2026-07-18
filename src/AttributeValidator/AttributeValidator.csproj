@@ -17,8 +17,8 @@
 		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
 		<PackageDescription>A collection of attributes that allows the validation of the input data model.</PackageDescription>
 		<Summary>A collection of attributes that allows the validation of the input data model.</Summary>
-		<PackageTitle>RzR.Shared.Attributes (AttributeValidator)</PackageTitle>
-		<Title>RzR.Shared.Attributes (AttributeValidator)</Title>
+		<PackageTitle>RzR.Validation.Attributes (AttributeValidator)</PackageTitle>
+		<Title>RzR.Validation.Attributes (AttributeValidator)</Title>
 		<LangVersion>9.0</LangVersion>
 		<Language>en-US</Language>
 		<RepositoryType>GIT</RepositoryType>
@@ -57,6 +57,5 @@
 
 	<ItemGroup>
 		<Folder Include="Attributes\Greater\" />
-		<Folder Include="Extensions\" />
 	</ItemGroup>
 </Project>

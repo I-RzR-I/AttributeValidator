@@ -1,0 +1,45 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>netstandard2.0</TargetFrameworks>
+		<Nullable>disable</Nullable>
+		<ImplicitUsings>disable</ImplicitUsings>
+		<RootNamespace>RzR.Validation.Attributes.Mvvm</RootNamespace>
+		<AssemblyName>RzR.Validation.Attributes.Mvvm</AssemblyName>
+		<LangVersion>latest</LangVersion>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<Authors>RzR</Authors>
+		<Copyright>RzR</Copyright>
+		<Owners>RzR</Owners>
+		<PackageLicenseFile>LICENSE</PackageLicenseFile>
+		<PackageIcon>PackageIcon.png</PackageIcon>
+		<NoWarn>$(NoWarn);CS8032</NoWarn>
+		<EnableNETAnalyzers>false</EnableNETAnalyzers>
+		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+		<PackageTags>Attribute;Validator;Validation;DataAnnotations;MVVM;INotifyDataErrorInfo;INotifyPropertyChanged;WPF;WinUI;MAUI;Avalonia;RzR;</PackageTags>
+		<RepositoryUrl>https://github.com/I-RzR-I/AttributeValidator</RepositoryUrl>
+		<PackageProjectUrl>https://github.com/I-RzR-I/AttributeValidator</PackageProjectUrl>
+		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+		<PackageDescription>MVVM integration for RzR.Validation.Attributes. Provides a ValidatableObservableObject base class implementing INotifyPropertyChanged and INotifyDataErrorInfo that validates view-model properties with the core DataAnnotations attributes. Works with WPF, WinUI, .NET MAUI, and Avalonia — no WPF dependency.</PackageDescription>
+		<Summary>MVVM base (INotifyDataErrorInfo) that validates with RzR.Validation.Attributes; works with WPF, WinUI, MAUI, and Avalonia.</Summary>
+		<PackageTitle>RzR.Validation.Attributes.Mvvm (AttributeValidator.Mvvm)</PackageTitle>
+		<Title>RzR.Validation.Attributes.Mvvm (AttributeValidator.Mvvm)</Title>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Include="..\shared\GeneralAssemblyInfo.cs" Link="Properties\GeneralAssemblyInfo.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\AttributeValidator\AttributeValidator.csproj" />
+	</ItemGroup>
+
+</Project>
