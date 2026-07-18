@@ -43,6 +43,6 @@ using System.Resources;
 #if !NETSTANDARD1_1
 [assembly: NeutralResourcesLanguage("en-US", UltimateResourceFallbackLocation.MainAssembly)]
 #endif
-[assembly: AssemblyVersion("2.0.0.106")]
-[assembly: AssemblyFileVersion("2.0.0.106")]
-[assembly: AssemblyInformationalVersion("2.0.0.106")]
+[assembly: AssemblyVersion("3.0.0.6710")]
+[assembly: AssemblyFileVersion("3.0.0.6710")]
+[assembly: AssemblyInformationalVersion("3.0.0.6710")]
