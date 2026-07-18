@@ -4,7 +4,7 @@
 | Name     | Details |
 |----------|----------|
 | RzR.Validation.Attributes | [![NuGet Version](https://img.shields.io/nuget/v/RzR.Validation.Attributes.svg?style=flat&logo=nuget)](https://www.nuget.org/packages/RzR.Validation.Attributes/) [![Nuget Downloads](https://img.shields.io/nuget/dt/RzR.Validation.Attributes.svg?style=flat&logo=nuget)](https://www.nuget.org/packages/RzR.Validation.Attributes)|
-| RzR.Validation.Attributes.AspNetCore | [![NuGet Version](https://img.shields.io/nuget/v/RzR.Validation.AspNetCore.Attributes.svg?style=flat&logo=nuget)](https://www.nuget.org/packages/RzR.Validation.Attributes.AspNetCore/) [![Nuget Downloads](https://img.shields.io/nuget/dt/RzR.Validation.AspNetCore.Attributes.svg?style=flat&logo=nuget)](https://www.nuget.org/packages/RzR.Validation.Attributes.AspNetCore)|
+| RzR.Validation.Attributes.AspNetCore | [![NuGet Version](https://img.shields.io/nuget/v/RzR.Validation.Attributes.AspNetCore.svg?style=flat&logo=nuget)](https://www.nuget.org/packages/RzR.Validation.Attributes.AspNetCore/) [![Nuget Downloads](https://img.shields.io/nuget/dt/RzR.Validation.Attributes.AspNetCore.svg?style=flat&logo=nuget)](https://www.nuget.org/packages/RzR.Validation.Attributes.AspNetCore)|
 | RzR.Validation.Attributes.Mvvm | [![NuGet Version](https://img.shields.io/nuget/v/RzR.Validation.Attributes.Mvvm.svg?style=flat&logo=nuget)](https://www.nuget.org/packages/RzR.Validation.Attributes.Mvvm/) [![Nuget Downloads](https://img.shields.io/nuget/dt/RzR.Validation.Attributes.Mvvm.svg?style=flat&logo=nuget)](https://www.nuget.org/packages/RzR.Validation.Attributes.Mvvm)|
 
 <details>
